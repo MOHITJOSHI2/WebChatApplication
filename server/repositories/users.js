@@ -35,6 +35,11 @@ class usersRepository {
     async getUserByEmail(email) {
         return await User.findOne({ Email: email })
     }
+
+    //For request data
+    async getAllUsersByArr(arr) {
+        return await User.find({ _id: { $in: arr } });
+    }
 }
 
 module.exports = new usersRepository()

@@ -5,6 +5,7 @@ import FindFriends from "../components/friendsComponents/FindFriends";
 
 const Friends = () => {
   const [findFriends, setFindFriends] = useState([]);
+  const [requests, setRequests] = useState([]);
 
   useEffect(() => {
     async function getAllUsers() {
@@ -28,21 +29,49 @@ const Friends = () => {
     getAllUsers();
   }, []);
 
+  useEffect(() => {
+    async function getAllUsers() {
+      try {
+        const req = await fetch(
+          "http://localhost:3000/friends/getFriendRequest",
+          {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+          }
+        );
+
+        const res = await req.json();
+        if (req.ok) {
+          setRequests(res.message);
+          console.log(res.message);
+        } else {
+          console.log(res.userErr);
+        }
+      } catch (error) {
+        console.log("Error at getAllFriends\n", error);
+      }
+    }
+    getAllUsers();
+  }, []);
+
   return (
     <>
       <div className="flex h-screen w-full">
-        <div>
+        <div className="flex h-screen">
           <SideBar />
         </div>
-        <div className="h-screen w-full  flex justify-between">
-          <div className="border flex-1 p-5 overflow-y-scroll">
+        <div className="h-screen w-full flex justify-between">
+          <div className="flex-1 p-5 overflow-y-scroll">
             <h1 className="text-[20px]">Friend Requests</h1>
-            <ShowRequests />
+            {requests.map((elem, index) => (
+              <ShowRequests userdata={elem} key={index} />
+            ))}
           </div>
-          <div className="border flex-1 p-5 overflow-y-scroll">
+          <div className="flex-1 p-5 overflow-y-scroll">
             <h1 className="text-[20px]">Explore Friends</h1>
             {findFriends.map((elem, index) => (
-              <FindFriends data={elem} key={index} />
+              <FindFriends userdata={elem} key={index} />
             ))}
           </div>
         </div>

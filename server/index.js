@@ -48,7 +48,7 @@ app.use("/auth", userRoutes)
 app.use("/user", authenticateUsers, userRoutes)
 
 //Friend Related Routes
-app.use('/friends', friendRoutes)
+app.use('/friends', authenticateUsers, friendRoutes)
 
 server.listen(process.env.PORT, () => {
     console.log(`connected on port ${process.env.PORT}`)

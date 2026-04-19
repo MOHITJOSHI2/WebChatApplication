@@ -12,31 +12,33 @@ class Friend {
     }
 
     //Get all the friends
-    async getFriends() {
-        return await friends.find()
+    async getFriends(user_id) {
+        return await friends.find({ user: user_id })
     }
 
     //Initial Friend Requests
-    async friendRequests(friend_id) {
+    async friendRequests(ids) {
         const newFriend = new friendRequests({
-            friends: friend_id
+            user: ids._id,
+            friends: ids.friend_id
         })
 
         return await newFriend.save()
     }
 
     //Get all the friend Requests
-    async getFriendRequests() {
-        return await friendRequests.find()
+    async getFriendRequests(user_id) {
+        return await friendRequests.find(
+            { friends: user_id }
+        )
     }
 
     // Accept friendRequest or delete
     async deleteFriendRequest(ids) {
-        return await friendRequests.findOneAndUpdate(
-            { user: ids._id },
-            { $pull: { friends: ids.friend_id } },
-            { returnDocument: 'after' }
-        )
+        return await friendRequests.findOneAndDelete({
+            user: ids.friend_id,   // sender
+            friends: ids._id       // receiver (you)
+        })
     }
 }
 

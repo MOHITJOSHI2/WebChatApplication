@@ -1,4 +1,5 @@
 const userServices = require("../services/usersServices")
+const friend = require("../services/friendsService")
 const jwt = require('jsonwebtoken')
 require('dotenv').config({ quiet: true })
 
@@ -112,8 +113,16 @@ const getAllUsers = async (req, res) => {
     try {
         if (req.user) {
             const data = await userServices.getUser(req.user?.Email)
-            if (data) {
-                res.status(200).json({ message: data })
+            const friendData = await friend.getAllFriends(req.user?._id)
+
+            const friendIds = friendData.map((elem) => elem.friends.toString())
+
+            const newData = data.filter(user =>
+                !friendIds.includes(user._id.toString())
+            );
+
+            if (newData) {
+                res.status(200).json({ message: newData })
             } else {
                 res.status(400).json({ err: "No user data" })
             }

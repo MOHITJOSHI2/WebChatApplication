@@ -5,6 +5,8 @@ import LoginPage from "./Pages/LoginPage";
 import SignupPage from "./Pages/SignupPage";
 import UserDashboard from "./Pages/UserDashboard";
 import Friends from "./Pages/Friends";
+import Profile from "./Pages/Profile";
+import Setting from "./Pages/Setting";
 
 const MyRoutes = () => {
   return (
@@ -17,6 +19,8 @@ const MyRoutes = () => {
           <Route path="/signupPage" element={<SignupPage />} />
           <Route path="/friends" element={<Friends />} />
           <Route path="/userDashboard" element={<UserDashboard />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/setting" element={<Setting />} />
         </Routes>
       </BrowserRouter>
     </div>

@@ -10,22 +10,23 @@ class FriendService {
     }
 
     //Get all friends
-    async getAllFriends() {
-        return await friendRepository.getFriends()
+    async getAllFriends(user_id) {
+        return await friendRepository.getFriends(user_id)
     }
 
+
     // Initial Friend requests
-    async friendRequests(friend_id) {
-        if (friend_id) {
-            return await friendRepository.friendRequests(friend_id)
+    async friendRequests(ids) {
+        if (ids._id && ids.friend_id) {
+            return await friendRepository.friendRequests(ids)
         } else {
             return "missing"
         }
     }
 
     //Get all friend Requests
-    async getAllFriendRequests() {
-        return await friendRepository.getFriendRequests()
+    async getAllFriendRequests(user_id) {
+        return await friendRepository.getFriendRequests(user_id)
     }
 
     // Initial Friend requests delete
@@ -40,12 +41,22 @@ class FriendService {
     // Initial Friend Requests accept
     async acceptFriendRequests(ids) {
         if (ids.friend_id && ids._id) {
-            const data = await friendRepository.addFriend(ids)
-            if (data) {
-                return await friendRepository.deleteFriendRequest(ids)
-            } else {
-                return "error"
-            }
+
+            // A -> B
+            await friendRepository.addFriend({
+                _id: ids._id,
+                friend_id: ids.friend_id
+            })
+
+            // B -> A  
+            await friendRepository.addFriend({
+                _id: ids.friend_id,
+                friend_id: ids._id
+            })
+
+            // delete request
+            return await friendRepository.deleteFriendRequest(ids)
+
         } else {
             return "missing"
         }

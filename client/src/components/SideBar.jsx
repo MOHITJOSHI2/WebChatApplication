@@ -69,11 +69,19 @@ const SideBar = () => {
               ? "text-indigo-600 font-medium bg-white shadow-sm"
               : "text-gray-500 hover:bg-gray-100"
           }`}
+          onClick={() => navigate("/profile")}
         >
           <User className="size-5" />
           <span>Profile</span>
         </a>
-        <a className="flex items-center gap-3 px-4 py-3 text-gray-500 hover:bg-gray-100 rounded-xl transition-all">
+        <a
+          className={`flex cursor-pointer items-center gap-3 px-4 py-3 rounded-xl transition-all ${
+            isActive("/setting")
+              ? "text-indigo-600 font-medium bg-white shadow-sm"
+              : "text-gray-500 hover:bg-gray-100"
+          }`}
+          onClick={() => navigate("/setting")}
+        >
           <Settings className="size-5" />
           <span>Settings</span>
         </a>

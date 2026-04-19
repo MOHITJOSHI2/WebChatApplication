@@ -50,6 +50,14 @@ class userServices {
     async getUser(email) {
         return await usersRepository.getAllUsers(email)
     }
+
+    async getUsersByArr(arr) {
+        if (arr.length > 0) {
+            return await usersRepository.getAllUsersByArr(arr)
+        } else {
+            return "missing"
+        }
+    }
 }
 
 module.exports = new userServices()
